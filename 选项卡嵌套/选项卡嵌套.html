@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			#box{
+				width: 550px;
+				height: 500px;
+				border: 1px solid #000000;
+				position: relative;
+			}
+			span{
+				width: 130px;
+				height: 50px;
+				border: 1px solid #000000;
+				float: left;
+				text-align: center;
+				line-height: 50px;
+			}
+			#box .active{
+				background: blue;
+			}
+			#box div{
+				width: 400px;
+				height:400px;
+				border: 1px solid #000000;
+				position: absolute;
+				left: 20px;
+				top: 70px;
+				display: none;
+			}
+			#box .show{display: block;}
+			p{
+				width: 200px;
+				height: 200px;
+				border: 1px solid #000000;
+				position: absolute;
+				right: 0;
+				top: 70px;
+				display: none;
+			}
+			.shy{
+				display: block;
+			}
+			li{
+				list-style: none;
+				width: 80px;
+				height: 50px;
+				border: 1px solid #000000;
+				float: left;
+				margin-top: 290px;
+				line-height: 50px;
+				text-align: center;
+			}
+			.tot{
+				background: red;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="box">
+			<span class="active">按钮一</span>
+			<span>按钮二</span>
+			<span>按钮三</span>
+			<div class="show" >一
+				<p>1</p>
+				<p>2</p>
+				<p>3</p>
+				<ul>
+					<li>点击1</li>
+					<li>点击2</li>
+					<li>点击3</li>
+				</ul>
+			</div>
+			<div >二
+				<p>1</p>
+				<p>2</p>
+				<p>3</p>
+				<ul>
+					<li>点击1</li>
+					<li>点击2</li>
+					<li>点击3</li>
+				</ul>
+			</div>
+			<div>三
+				<p>1</p>
+				<p>2</p>
+				<p>3</p>
+				<ul>
+					<li>点击1</li>
+					<li>点击2</li>
+					<li>点击3</li>
+				</ul>
+			</div>
+		</div>
+		<script type="text/javascript">
+			var spans=document.getElementsByTagName('span');
+			var box=document.getElementById('box');
+			var divs=box.getElementsByTagName('div');
+ 			var n=0;
+			var m=0;
+			var timer = null;
+			function tob(){
+				for(var i=0;i<spans.length;i++){
+					spans[i].className = '';
+					divs[i].className = '';
+				}
+				spans[n].className = 'active';
+				divs[n].className = 'show';
+			}
+			for(var i=0;i<spans.length;i++){
+				spans[i].index = i;
+				spans[i].onclick = function(){
+					n = this.index;
+					tob();
+				}
+			}
+			function fn(c){
+				var lis = divs[c].getElementsByTagName('li');
+				var ps = divs[c].getElementsByTagName('p');
+				//初始化
+				ps[0].className = 'shy';
+				lis[0].className = 'tot';
+				for(var i=0;i<lis.length;i++){
+					lis[i].index = i;
+					lis[i].onclick = function(){
+						m = this.index;
+						act();
+					}
+				}
+			}
+			fn(0);
+			fn(1);
+			fn(2);
+			function act(){
+				var ps = divs[n].getElementsByTagName('p');
+				var lis = divs[n].getElementsByTagName('li');
+				for(var i=0;i<lis.length;i++){
+					lis[i].className = '';
+					ps[i].className = '';
+				}
+				lis[m].className = 'tot';
+				ps[m].className = 'shy';
+			}
+			timer = setInterval(function(){
+				m++;
+				var lis = divs[n].getElementsByTagName('li');
+				if(m>spans.length-1){
+					n++;
+					m=0;
+					if(n>lis.length-1){
+						n = 0;
+					}
+					tob();
+				}
+				act();
+			},1000)
+		</script>
+	</body>
+</html>

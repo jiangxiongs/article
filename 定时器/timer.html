@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>timer</title>
+	<style type="text/css">
+		.fl{
+			float: left;
+		}
+		.clearfix:after{
+			content: "";
+			display: block;
+			clear: both;
+		}
+		ul{
+			padding: 0;
+			margin: 0;
+			list-style: none;
+			width: 880px;
+			/*transition: 1s;*/
+			/*margin-left: -220px;*/
+
+		}
+		.hidebox{
+			margin: 100px 0px 0 400px;
+			width: 220px;
+			overflow: hidden;
+			height:320px;
+
+
+		}
+		li{
+			position: relative;
+			/*transition: 1s;*/
+
+
+		}
+		li img{
+			height: 320px;
+			width: 220px;
+			vertical-align: top;
+			border: none;
+		}
+		.text{
+			text-align: center;
+			width: 220px;
+			height: 30px;
+			color: #fff;
+			background-color: rgba(0,0,0,0.6);
+			position: absolute;
+			left: 0;
+			bottom: -30px;
+		}
+	</style>
+</head>
+<body>
+	<div class="hidebox">
+		<ul class="clearfix pic">
+			<li class="fl">
+				<img src="img/0_091.jpeg">
+				<div class="text">全职高手</div>
+			</li>
+			<li class="fl">
+				<img src="img/220.jpeg">
+				<div class="text">逗乐儿歌</div>
+			</li>
+			<li class="fl">
+				<img src="img/220_002.jpeg">
+				<div class="text">总动员</div>
+			</li>
+			<li class="fl">
+				<img src="img/3llq9tbpd17kuzi_y.jpg">
+				<div class="text">选择</div>
+			</li>	
+		</ul>
+		
+	</div>
+	<script type="text/javascript">
+		var lis = document.querySelectorAll('ul li');
+		var texts = document.querySelectorAll('ul div');
+		var ul = document.querySelector('ul');	
+		var num = 0;
+	
+		function moveInul(){
+			// alert(1);
+			var timer = null;//定时器
+			var speed = 5;//运动速度,每个时间段走的距离，这里既是每20ms走10的距离
+			var s = 0;//运动路程
+			var currSite = getCssStyle(ul,'marginLeft');//现在的位置
+			timer = setInterval(function(){
+				s-=speed;//marginleft是负的
+				if (s<=-220) {
+					clearInterval(timer);
+					num++;
+					moveInText();
+				}
+				ul.style.marginLeft = currSite+s+'px';
+
+			},20)
+		}
+
+		
+		function moveInText(){
+
+			var timer = null;//定时器
+			var speed = 1;//运动速度
+			var s = 0;//运动路程
+			
+			var currSite = getCssStyle(texts[num],'bottom');//现在的位置
+
+			timer = setInterval(function(){
+				// text往上面走的距离
+				s+=speed;
+				if (s>30) {//当走到text的高度的时候停止向上走动
+					s=30;
+					clearInterval(timer);
+					if (num<texts.length-1) {
+						// 在此处停留一会儿之后向下走动
+				// 为了停留就要加延时定时器
+						setTimeout(function(){
+							timer = setInterval(function(){//再次启动另一个定时器让texts向下移动
+								s-=speed;
+								if (s<0) {
+									s=0;
+									clearInterval(timer);
+									// 当完全显示不出的时候停止定时器
+									moveInul();
+								}
+							texts[num].style.bottom = currSite+s+'px';
+							},20)
+						},1000)
+					}
+					
+				}
+				texts[num].style.bottom = currSite+s+'px';
+				
+			},20)
+				
+			
+
+		}
+		moveInText();
+		// moveInul();
+		function getCssStyle(obj,attr){
+			return parseFloat(getComputedStyle(obj)[attr]); //因为拿来计算的数据没有颜色一类的都是数字相关的，所以为方便计算此处把属性值直接转为数字
+		}
+	</script>
+</body>
+</html>

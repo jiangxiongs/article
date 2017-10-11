@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			*{
+				padding: 0;
+				margin: 0;
+			}
+			#box{
+				width: 453px;
+				height: 272px;
+				border: 1px solid #000000;
+				margin: 20px auto;
+			}
+			span{
+				width: 150px;
+				height: 50px;
+				float: left;
+				border-right: 1px solid #000;
+				border-bottom: 1px solid #000;
+				text-align: center;
+				line-height: 50px;
+				font-size: 18px;
+				margin-bottom: 40px;
+				cursor: pointer;
+			}
+			.list{
+				overflow: hidden;
+				border: 1px solid #000;
+				display: none;
+			}
+			.list img{
+				float: left;
+				width: 170px;
+				height: 170px;
+				border: 5px solid #000;
+			}
+			.list .txt{
+	            height:50px;
+	            line-height: 50px;
+	            margin-top:10px;
+	            background-color: #eeeeee;
+	            margin-right:10px;
+	            margin-left:210px;
+	            padding:0 10px;
+	        }
+		</style>
+	</head>
+	<body>
+		<div id="box">
+			<span>专题</span>
+			<span>视频</span>
+			<span>图片</span>
+			<div class="list">
+				<img src="img/1.jpg"/ alt="">
+				<div class="txt">奇虎360纽交所上市</div>
+				<div class="txt">2011年IT领袖峰会</div>
+				<div class="txt">CCBN召开，助三网联盟</div>
+			</div>
+			<div class="list">
+				<img src="img/1.jpg"/ alt="">
+				<div class="txt">奇虎360纽交所上市</div>
+				<div class="txt">2011年IT领袖峰会</div>
+				<div class="txt">CCBN召开，助三网联盟</div>
+			</div>
+			<div class="list">
+				<img src="img/1.jpg"/ alt="">
+				<div class="txt">奇虎360纽交所上市</div>
+				<div class="txt">2011年IT领袖峰会</div>
+				<div class="txt">CCBN召开，助三网联盟</div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			var spans = document.getElementsByTagName('span');
+			var list = document.getElementsByClassName('list');
+//			var txt = document.getElementsByClassName('txt');
+			var txtes = list[0].querySelectorAll('.txt');
+			//控制子菜单位置
+			var n = 0;
+			//控制面板位置
+			var m = 0;
+			var timer = null;
+			time();
+			//小菜单
+			for(var i=0;i<spans.length;i++){
+				spans[i].index = i;
+				spans[i].onmouseover = function(){
+					//在位置发生变化时，把上次显示的面板隐藏
+					list[m].style.display = 'none';
+					spans[m].style.backgroundColor = '';
+					txtes[n].style.backgroundColor = '';
+					//切换大面板位置
+					m = this.index;
+					//当大面板位置发生变化，子菜单要恢复到0
+					n = 0;
+					//修改当前位置的内容
+					list[m].style.display = 'block';
+					spans[m].style.backgroundColor = 'orangered';
+					//保存当前面板的子元素
+					txtes = list[m].querySelectorAll('.txt');
+					txtes[n].style.backgroundColor = 'deepskyblue';
+				}
+				
+				//分别找到各面板的子菜单
+				//找到当前面板下的所有子菜单
+				var menu = list[i].querySelectorAll('.txt');
+				for(var j=0;j<menu.length;j++){
+					menu[j].index = j;
+					menu[j].onmouseover = function(){
+						txtes[n].style.backgroundColor = '';
+						n = this.index;
+						txtes[n].style.backgroundColor = 'deepskyblue';
+					}
+				}
+			}
+			function time(){
+				timer = setInterval(function(){
+					//清除上一次位置的样式
+					txtes[n].style.backgroundColor = '';
+					//在位置发生变化时，把上次的面板隐藏
+					list[m].style.display = 'none';
+					spans[m].style.backgroundColor = '';
+					//每秒钟，子菜单切换一次
+					n++;
+					if(n>txtes.length-1){
+						m++;
+						if(m>list.length-1){
+							m = 0;
+						}
+						n = 0;
+					}
+					//切换面板
+					list[m].style.display = 'block';
+					spans[m].style.backgroundColor = 'orangered';
+					//当面板发生变化时，需要把子菜单内容也切换到相同面板下的内容
+           			 txtes = list[m].querySelectorAll('.txt');
+           			 //修改变化后的子菜单样式
+           			 txtes[n].style.backgroundColor = 'deepskyblue';
+				},1000)
+			}
+		</script>
+	</body>
+</html>
